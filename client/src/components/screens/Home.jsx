@@ -1,93 +1,40 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 const Home = () => {
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    fetch("./allposts", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        setData(result.posts);
+      });
+  }, []);
   return (
     <main className='home'>
-      <section className='card home-card'>
-        <h5>Alex</h5>
-        <div className='card-image'>
-          <img
-            src='https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?ixid=MXwxMjA3fDB8MHxzZWFyY2h8Njl8fHdhbGxwYXBlcnxlbnwwfDB8MHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
-            alt='card'
-          />
-        </div>
-        <div className='card-content'>
-          <i className='material-icons' style={{ color: "red" }}>
-            favorite
-          </i>
-          <h6>title</h6>
-          <p>This is amazing post</p>
-          <input type='text' placeholder='add a comment' />
-        </div>
-      </section>
-      <section className='card home-card'>
-        <h5>Alex</h5>
-        <div className='card-image'>
-          <img
-            src='https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?ixid=MXwxMjA3fDB8MHxzZWFyY2h8Njl8fHdhbGxwYXBlcnxlbnwwfDB8MHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
-            alt='card'
-          />
-        </div>
-        <div className='card-content'>
-          <i className='material-icons' style={{ color: "red" }}>
-            favorite
-          </i>
-          <h6>title</h6>
-          <p>This is amazing post</p>
-          <input type='text' placeholder='add a comment' />
-        </div>
-      </section>
-      <section className='card home-card'>
-        <h5>Alex</h5>
-        <div className='card-image'>
-          <img
-            src='https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?ixid=MXwxMjA3fDB8MHxzZWFyY2h8Njl8fHdhbGxwYXBlcnxlbnwwfDB8MHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
-            alt='card'
-          />
-        </div>
-        <div className='card-content'>
-          <i className='material-icons' style={{ color: "red" }}>
-            favorite
-          </i>
-          <h6>title</h6>
-          <p>This is amazing post</p>
-          <input type='text' placeholder='add a comment' />
-        </div>
-      </section>
-      <section className='card home-card'>
-        <h5>Alex</h5>
-        <div className='card-image'>
-          <img
-            src='https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?ixid=MXwxMjA3fDB8MHxzZWFyY2h8Njl8fHdhbGxwYXBlcnxlbnwwfDB8MHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
-            alt='card'
-          />
-        </div>
-        <div className='card-content'>
-          <i className='material-icons' style={{ color: "red" }}>
-            favorite
-          </i>
-          <h6>title</h6>
-          <p>This is amazing post</p>
-          <input type='text' placeholder='add a comment' />
-        </div>
-      </section>
-      <section className='card home-card'>
-        <h5>Alex</h5>
-        <div className='card-image'>
-          <img
-            src='https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?ixid=MXwxMjA3fDB8MHxzZWFyY2h8Njl8fHdhbGxwYXBlcnxlbnwwfDB8MHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
-            alt='card'
-          />
-        </div>
-        <div className='card-content'>
-          <i className='material-icons' style={{ color: "red" }}>
-            favorite
-          </i>
-          <h6>title</h6>
-          <p>This is amazing post</p>
-          <input type='text' placeholder='add a comment' />
-        </div>
-      </section>
+      {data.map((item) => {
+        const { photo, title, body, _id } = item;
+        const { name } = item.postedBy;
+        return (
+          <section className='card home-card' key={_id}>
+            <h5>{name}</h5>
+            <div className='card-image'>
+              <img src={photo} alt={title} />
+            </div>
+            <div className='card-content'>
+              <i className='material-icons' style={{ color: "red" }}>
+                favorite
+              </i>
+              <h6>{title}</h6>
+              <p>{body}</p>
+              <input type='text' placeholder='add a comment' />
+            </div>
+          </section>
+        );
+      })}
     </main>
   );
 };
