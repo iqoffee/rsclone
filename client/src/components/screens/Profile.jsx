@@ -1,6 +1,22 @@
-import React from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { UserContext } from "../../App";
 
 const Profile = () => {
+  const [myPics, setPics] = useState([]);
+  const { state, dispatch } = useContext(UserContext);
+
+  useEffect(() => {
+    fetch("./myposts", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        setPics(result.myposts);
+      });
+  }, []);
+
   return (
     <main
       style={{
@@ -24,7 +40,7 @@ const Profile = () => {
           />
         </div>
         <div>
-          <h4>Alex Bimant</h4>
+          <h4>{state ? state.name : "Loading"}</h4>
           <section
             style={{
               display: "flex",
@@ -40,36 +56,11 @@ const Profile = () => {
       </div>
 
       <div className='gallery'>
-        <img
-          className='item'
-          src='https://images.unsplash.com/photo-1584308358033-ccc726d7991b?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MTM5fHxwZXJzb258ZW58MHwyfDB8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
-          alt='Alex Bimant<'
-        />
-        <img
-          className='item'
-          src='https://images.unsplash.com/photo-1584308358033-ccc726d7991b?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MTM5fHxwZXJzb258ZW58MHwyfDB8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
-          alt='Alex Bimant<'
-        />
-        <img
-          className='item'
-          src='https://images.unsplash.com/photo-1584308358033-ccc726d7991b?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MTM5fHxwZXJzb258ZW58MHwyfDB8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
-          alt='Alex Bimant<'
-        />
-        <img
-          className='item'
-          src='https://images.unsplash.com/photo-1584308358033-ccc726d7991b?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MTM5fHxwZXJzb258ZW58MHwyfDB8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
-          alt='Alex Bimant<'
-        />
-        <img
-          className='item'
-          src='https://images.unsplash.com/photo-1584308358033-ccc726d7991b?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MTM5fHxwZXJzb258ZW58MHwyfDB8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
-          alt='Alex Bimant<'
-        />
-        <img
-          className='item'
-          src='https://images.unsplash.com/photo-1584308358033-ccc726d7991b?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MTM5fHxwZXJzb258ZW58MHwyfDB8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
-          alt='Alex Bimant<'
-        />
+        {myPics.map((item) => {
+          const { photo, title, _id } = item;
+
+          return <img className='item' src={photo} alt={title} key={_id} />;
+        })}
       </div>
     </main>
   );
