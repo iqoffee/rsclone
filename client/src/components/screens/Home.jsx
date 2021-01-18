@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "../../App";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const [data, setData] = useState([]);
@@ -112,7 +113,15 @@ const Home = () => {
         return (
           <section className='card home-card' key={_id}>
             <h5>
-              {name}
+              <Link
+                to={
+                  item.postedBy._id !== state._id
+                    ? `/profile/${item.postedBy._id}`
+                    : "/profile"
+                }
+              >
+                {name}
+              </Link>
               {item.postedBy._id == state._id && (
                 <i
                   className='material-icons'
