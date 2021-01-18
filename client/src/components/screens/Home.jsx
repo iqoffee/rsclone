@@ -63,6 +63,47 @@ const Home = () => {
       });
   };
 
+  const makeComment = (text, postId) => {
+    fetch("/comment", {
+      method: "put",
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+      },
+      body: JSON.stringify({
+        postId,
+        text,
+      }),
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        const newData = data.map((item) => {
+          return item._id == result._id ? result : item;
+        });
+        setData(newData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const deletePost = (postId) => {
+    fetch(`/deletePost/${postId}`, {
+      method: "delete",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        console.log(result);
+        const newData = data.filter((item) => {
+          return item._id !== result._id;
+        });
+        setData(newData);
+      });
+  };
+
   return (
     <main className='home'>
       {data.map((item) => {
@@ -70,7 +111,23 @@ const Home = () => {
         const { name } = item.postedBy;
         return (
           <section className='card home-card' key={_id}>
-            <h5>{name}</h5>
+            <h5>
+              {name}
+              {item.postedBy._id == state._id && (
+                <i
+                  className='material-icons'
+                  style={{
+                    cursor: "pointer",
+                    float: "right",
+                  }}
+                  onClick={() => {
+                    deletePost(item._id);
+                  }}
+                >
+                  delete
+                </i>
+              )}
+            </h5>
             <div className='card-image'>
               <img src={photo} alt={title} />
             </div>
@@ -100,7 +157,24 @@ const Home = () => {
               <h6>{likes.length} likes</h6>
               <h6>{title}</h6>
               <p>{body}</p>
-              <input type='text' placeholder='add a comment' />
+              {item.comments.map((record) => {
+                return (
+                  <h6 key={record._id}>
+                    <span style={{ fontWeight: "501 " }}>
+                      {`${record.postedBy.name} `}
+                    </span>
+                    {record.text}
+                  </h6>
+                );
+              })}
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  makeComment(e.target[0].value, _id);
+                }}
+              >
+                <input type='text' placeholder='add a comment' />
+              </form>
             </div>
           </section>
         );
