@@ -6,13 +6,14 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const {JWT_SECRET} = require('../keys')
 const requireLogin = require('../middleware/requireLogin')
+mongoose.set('useFindAndModify', false)
 
 router.get('/protected', requireLogin, (req, res) => {
     res.send('Hello user')
 })
 
 router.post('/signup', (req, res) => {
-    const {name, email, password} = req.body
+    const {name, email, password, pic} = req.body
 
     if(!email || !password || !name){
         return res.status(422).json({error: 'please add all the fields'})
@@ -21,7 +22,7 @@ router.post('/signup', (req, res) => {
     User.findOne({email: email})
     .then((savedUser) => {
         if (savedUser){
-            return res.status(422).json({error: 'user already exist whith that email'})
+            return res.status(422).json({error: 'user already exist with that email'})
         }
 
         bcrypt.hash(password, 12)
@@ -30,7 +31,8 @@ router.post('/signup', (req, res) => {
             const user = new User({
                 email,
                 password: hashedpassword,
-                name
+                name,
+                pic
             })  
 
             user.save()
@@ -68,8 +70,8 @@ router.post('/signin', (req, res) => {
             if (doMatch) {
                 // res.json({message: 'Successfully signed in'})
                 const token = jwt.sign({id: savedUser._id}, JWT_SECRET)
-                const {_id, name, email} = savedUser
-                res.json({token, user:{_id, name, email}})
+                const {_id, name, email, followers, following, pic} = savedUser
+                res.json({token, user:{_id, name, email, followers, following, pic}})
 
             }
             else {

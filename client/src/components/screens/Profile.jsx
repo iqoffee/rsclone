@@ -6,7 +6,7 @@ const Profile = () => {
   const { state, dispatch } = useContext(UserContext);
 
   useEffect(() => {
-    fetch("./myposts", {
+    fetch("/myposts", {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("jwt")}`,
       },
@@ -35,12 +35,13 @@ const Profile = () => {
         <div>
           <img
             style={{ width: "160px", height: "160px", borderRadius: "80px" }}
-            src='https://images.unsplash.com/photo-1584308358033-ccc726d7991b?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MTM5fHxwZXJzb258ZW58MHwyfDB8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
+            src={state ? state.pic : "loading"}
             alt={state ? state.name : "Loading"}
           />
         </div>
         <div>
           <h4>{state ? state.name : "Loading"}</h4>
+          <h4>{state ? state.email : "Loading"}</h4>
           <section
             style={{
               display: "flex",

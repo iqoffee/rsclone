@@ -22,6 +22,11 @@ const userSchema = new mongoose.Schema({
 		 ref:'user'
 		}],
 
+	pic: {
+		type: String,
+		default: 'https://res.cloudinary.com/iqoffee/image/upload/v1611996903/index_bfa8fc.png'
+	},
+
 	following:[{
 		type:ObjectId,
 		 ref:'user'
