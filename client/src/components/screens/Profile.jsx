@@ -36,7 +36,7 @@ const Profile = () => {
           <img
             style={{ width: "160px", height: "160px", borderRadius: "80px" }}
             src='https://images.unsplash.com/photo-1584308358033-ccc726d7991b?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MTM5fHxwZXJzb258ZW58MHwyfDB8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
-            alt='Alex Bimant<'
+            alt={state ? state.name : "Loading"}
           />
         </div>
         <div>
@@ -48,9 +48,9 @@ const Profile = () => {
               width: "108%",
             }}
           >
-            <h6>40 posts</h6>
-            <h6>40 followers</h6>
-            <h6>40 following</h6>
+            <h6>{myPics.length} posts</h6>
+            <h6>{state ? state.following.length : "0"} following</h6>
+            <h6>{state ? state.followers.length : "0"} followers</h6>
           </section>
         </div>
       </div>
