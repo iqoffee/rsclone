@@ -37,7 +37,7 @@ const SignIn = () => {
           localStorage.setItem("user", JSON.stringify(data.user));
           dispatch({ type: "USER", payload: data.user });
           M.toast({ html: "Signed in success", classes: "green darken-3" });
-          history.push("./");
+          history.push("/");
         }
       })
       .catch((err) => {

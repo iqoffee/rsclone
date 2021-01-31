@@ -32,7 +32,7 @@ const CreatePost = () => {
               html: "Created post successfully",
               classes: "green darken-3",
             });
-            history.push("./");
+            history.push("/");
           }
         })
         .catch((err) => {

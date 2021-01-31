@@ -62,7 +62,7 @@ const SignUp = () => {
           M.toast({ html: data.error, classes: "red darken-3" });
         } else {
           M.toast({ html: data.message, classes: "green darken-3" });
-          history.push("./signin");
+          history.push("/signin");
         }
       })
       .catch((err) => {
