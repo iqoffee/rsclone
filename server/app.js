@@ -3,7 +3,7 @@ const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
 const PORT = process.env.PORT || 5000
-const {MONGOURL} = require('./keys')
+const {MONGOURL} = require('./config/keys')
 
 mongoose.connect(MONGOURL, {
 	useNewUrlParser: true,
@@ -34,6 +34,6 @@ if(process.env.NODE_ENV=="production"){
 	})
 }
 
-app.listen((process.env.PORT || 5000), function(){
-  console.log('listening on *:5000');
-});
+app.listen(PORT,()=>{
+	console.log("server is running on",PORT)
+})
