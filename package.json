@@ -4,7 +4,7 @@
   "description": "NodejsWebApp1",
   "main": "index.js",
   "scripts": {
-    "start": "node ./server/app.js",
+    "start": "node app.js",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "dependencies": {
