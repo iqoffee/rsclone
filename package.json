@@ -4,13 +4,16 @@
   "description": "NodejsWebApp1",
   "main": "index.js",
   "scripts": {
-    "start": "node ./server/app.js",
+    "start": "node app.js",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.11.9"
+    "mongoose": "^5.11.9",
+    "nodemailer": "^6.4.17",
+    "nodemailer-sendgrid": "^1.0.3",
+    "nodemailer-sendgrid-transport": "^0.2.0"
   }
 }

@@ -120,6 +120,7 @@ const Home = () => {
                     : "/profile"
                 }
               >
+                {console.log(item)}
                 {name}
               </Link>
               {item.postedBy._id == state._id && (

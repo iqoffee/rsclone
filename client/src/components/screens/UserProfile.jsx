@@ -37,7 +37,6 @@ const Profile = () => {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-
         dispatch({
           type: "UPDATE",
           payload: {
@@ -72,8 +71,6 @@ const Profile = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
-
         dispatch({
           type: "UPDATE",
           payload: {

@@ -43,7 +43,6 @@ const Profile = () => {
           })
             .then((res) => res.json())
             .then((result) => {
-              console.log(result);
               localStorage.setItem(
                 "user",
                 JSON.stringify({ ...state, pic: result.pic }),
@@ -72,6 +71,7 @@ const Profile = () => {
         margin: "0px auto",
       }}
     >
+      {console.log(state)}
       <div
         style={{
           display: "flex",

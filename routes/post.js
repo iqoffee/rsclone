@@ -4,8 +4,6 @@ const mongoose = require('mongoose')
 const requireLogin = require('../middleware/requireLogin')
 const Post = mongoose.model('Post')
 
-mongoose.set('useFindAndModify', false)
-
 router.get('/allposts', requireLogin, (req, res) =>{
 	Post.find()
 	.populate('postedBy', '_id name')
@@ -40,7 +38,10 @@ router.post('/createpost', requireLogin, (req, res) =>{
 		title,
 		body,
 		photo: pic,
-		postedBy: req.user
+		postedBy: {
+			_id: req.user._id,
+			name: req.user.name
+		}
 	})
 
 	post.save().then((result)=>{

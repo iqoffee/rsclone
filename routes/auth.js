@@ -6,7 +6,14 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const {JWT_SECRET} = require('../config/keys')
 const requireLogin = require('../middleware/requireLogin')
-mongoose.set('useFindAndModify', false)
+const nodemailer = require('nodemailer')
+const sendgriidTransport = require('nodemailer-sendgrid-transport')
+
+const transporter = nodemailer.createTransport(sendgriidTransport({
+    auth: {
+        api_key: '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'
+    }
+}))
 
 router.get('/protected', requireLogin, (req, res) => {
     res.send('Hello user')
@@ -37,6 +44,12 @@ router.post('/signup', (req, res) => {
 
             user.save()
             .then(user => {
+                transporter.sendMail({
+                    to: user.email,
+                    from: 'no--reply@insta-clone.com',
+                    subject: 'signup success',
+                    html: '<h1>Welcome to insta-clone</h1>'
+                })
                 res.json({message: 'saved successfully'})
             })
             .catch(err => { 
@@ -71,7 +84,7 @@ router.post('/signin', (req, res) => {
                 // res.json({message: 'Successfully signed in'})
                 const token = jwt.sign({id: savedUser._id}, JWT_SECRET)
                 const {_id, name, email, followers, following, pic} = savedUser
-                res.json({token, user:{_id, name, email, followers, following, pic}})
+                res.json({token,user:{_id,name,email,followers,following,pic}})
 
             }
             else {
